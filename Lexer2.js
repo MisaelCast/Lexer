@@ -9,7 +9,7 @@ fs.readFile('sql.txt', 'utf8', (err, data) => {
     }
 
     // Dividir las consultas con punto y coma
-    const consultas = data.split(';'); 
+    const consultas = data.split('\n'); 
 
     const listaDePalabras = [];
 
@@ -22,7 +22,6 @@ fs.readFile('sql.txt', 'utf8', (err, data) => {
         for (let j = 0; j < palabras.length; j++) {
             let palabra = palabras[j];
 
-            //si la palabra termina en coma
             if (palabra.endsWith(',')) {
                 // Elimina la coma al final de la palabra
                 palabra = palabra.slice(0, -1);
@@ -32,8 +31,15 @@ fs.readFile('sql.txt', 'utf8', (err, data) => {
                 // Agrega una coma en la lista
                 listaDePalabras.push(',');
 
+            } else if (palabra.endsWith(';')) {
+                palabra = palabra.slice(0, -1);
+
+                // Agrega la palabra a la lista
+                listaDePalabras.push(palabra);
+                // Agrega un punto y coma en la lista
+                listaDePalabras.push(';');
             } else {
-                // Si la palabra no termina con una coma agregala
+                // Si la palabra no termina con una coma o punto y coma, agrégala tal como está
                 listaDePalabras.push(palabra);
             }
         }
