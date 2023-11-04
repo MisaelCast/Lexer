@@ -22,9 +22,7 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
         }
     });
 
-    // Ahora tienes el keywordMap cargado desde el archivo sin comillas dobles
-    console.log('Keyword Map cargado desde el archivo:');
-    console.log(keywordMap);
+
 
     // Luego, puedes continuar con la lectura del archivo 'sql.txt' y la búsqueda de palabras.
     fs.readFile('sql.txt', 'utf8', (err, data) => {
@@ -34,7 +32,7 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
             return;
         }
     
-        // Dividir las consultas con punto y coma
+        // Dividir las consultas
         const consultas = data.split('\n'); 
     
         const listaDePalabras = [];
@@ -67,20 +65,27 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
                     // Si la palabra no termina con una coma o punto y coma, agrégala tal como está
                     listaDePalabras.push(palabra);
                 }
-                    
-                // Busca el número correspondiente en el keywordMap
-                const numeroEncontrado = buscarPalabraEnMapa(keywordMap, palabra);
-                if (numeroEncontrado !== null) {
-                    numerosEncontrados.push(numeroEncontrado);
-                }else{
-                    numerosEncontrados.push(palabra);
-                }
+              
             }
+            
         }
+
         // Muestra la lista de palabras en la terminal.
         console.log('Lista de palabras de la consulta:');
         console.log(listaDePalabras);
-    
+
+        for (let i = 0; i < listaDePalabras.length; i++){
+            const palabra = listaDePalabras[i];
+            // Busca el número correspondiente en el keywordMap
+            const numeroEncontrado = buscarPalabraEnMapa(keywordMap, palabra);
+                
+            if (numeroEncontrado !== null) {
+                numerosEncontrados.push(numeroEncontrado);
+            }else{
+                numerosEncontrados.push(palabra);
+            }
+        }
+        
         // Muestra los números encontrados
         console.log('Consulta Tokenizada:');
         console.log(numerosEncontrados);
