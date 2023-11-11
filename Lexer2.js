@@ -88,12 +88,12 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
             
             // Mostrar errores específicos de SELECT
             if (erroresSelect.length > 0) {
-                console.log('Errores en la consulta SELECT:');
+                console.log('Errores en la consulta:');
                 console.log(erroresSelect);
                 // Termina la ejecución del programa si hay errores
                 process.exit(1);
             } else {
-                console.log('La consulta SELECT es válida.');
+                console.log('La consulta es válida.');
             }
         } else {
             console.log('La consulta no comienza con un "SELECT".');
@@ -102,15 +102,7 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
         // Realizar validaciones en la consulta SQL
         const errores = SELECT(numerosEncontrados);
 
-        // Mostrar errores
-        if (errores.length > 0) {
-            console.log('Errores en la consulta:');
-            console.log(errores);
-            // Termina la ejecución del programa si hay errores
-            process.exit(1);
-        } else {
-            console.log('La consulta es válida.');
-        }
+
     });
 });
 
