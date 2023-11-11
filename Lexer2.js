@@ -83,12 +83,63 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
         // Muestra la consulta tokenizada
         console.log('Consulta Tokenizada:');
         console.log(numerosEncontrados);
+
+        // Verifica si la lista comienza con un "655" (SELECT) y llama a la función SELECT
+        if (numerosEncontrados.length > 0 && numerosEncontrados[0] === '655') {
+            const erroresSelect = SELECT(numerosEncontrados);
+            
+            // Mostrar errores específicos de SELECT
+            if (erroresSelect.length > 0) {
+                console.log('Errores en la consulta SELECT:');
+                console.log(erroresSelect);
+            } else {
+                console.log('La consulta SELECT es válida.');
+            }
+        } else {
+            console.log('La consulta no comienza con un "SELECT".');
+        }
+
+        // Realizar validaciones en la consulta SQL
+        const errores = SELECT(numerosEncontrados);
+
+        // Mostrar errores
+        if (errores.length > 0) {
+            console.log('Errores en la consulta:');
+            console.log(errores);
+        } else {
+            console.log('La consulta es válida.');
+        }
     });
 });
 
 // Función para asignar un valor de 1000 a palabras no reservadas
 function asignarValor(palabra) {
     return '1000';
+}
+
+// Función para validar la consulta SQL
+function SELECT(numerosEncontrados) {
+    const errores = [];
+    let contadorSelect = 0;
+
+    for (let i = 0; i < numerosEncontrados.length; i++) {
+        const numero = numerosEncontrados[i];
+
+        if (numero === '655') {
+            // Si encuentra un "SELECT" (655), incrementa el contador
+            contadorSelect++;
+
+            // Verifica si hay más de un "SELECT" consecutivo
+            if (contadorSelect > 1) {
+                errores.push('Error: Se encontró más de un "SELECT" consecutivo.');
+            }
+        } else {
+            // Reinicia el contador si no es un "SELECT"
+            contadorSelect = 0;
+        }
+    }
+
+    return errores;
 }
 
 // Función para buscar una palabra en el mapa y obtener su número
