@@ -22,8 +22,6 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
         }
     });
 
-
-
     // Luego, puedes continuar con la lectura del archivo 'sql.txt' y la búsqueda de palabras.
     fs.readFile('sql.txt', 'utf8', (err, data) => {
         // Manejo de errores durante la lectura
@@ -31,16 +29,16 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
             console.error(err);
             return;
         }
-    
+
         // Dividir las consultas
-        const consultas = data.split('\n'); 
-    
+        const consultas = data.split('\n');
+
         const listaDePalabras = [];
         const numerosEncontrados = []; // Lista para almacenar los números encontrados
-    
+
         for (let i = 0; i < consultas.length; i++) {
             const palabras = consultas[i].split(" ");
-    
+
             // Itera sobre cada palabra en la consulta
             for (let j = 0; j < palabras.length; j++) {
                 let palabra = palabras[j];
@@ -48,15 +46,15 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
                 if (palabra.endsWith(',')) {
                     // Elimina la coma al final de la palabra
                     palabra = palabra.slice(0, -1);
-    
+
                     // Agrega la palabra a la lista
                     listaDePalabras.push(palabra);
                     // Agrega una coma en la lista
                     listaDePalabras.push(',');
-    
+
                 } else if (palabra.endsWith(';')) {
                     palabra = palabra.slice(0, -1);
-    
+
                     // Agrega la palabra a la lista
                     listaDePalabras.push(palabra);
                     // Agrega un punto y coma en la lista
@@ -65,32 +63,33 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
                     // Si la palabra no termina con una coma o punto y coma, agrégala tal como está
                     listaDePalabras.push(palabra);
                 }
-              
+
             }
-            
+
         }
 
         // Muestra la lista de palabras en la terminal.
         console.log('Lista de palabras de la consulta:');
         console.log(listaDePalabras);
 
-        for (let i = 0; i < listaDePalabras.length; i++){
+        for (let i = 0; i < listaDePalabras.length; i++) {
             const palabra = listaDePalabras[i];
-            // Busca el número correspondiente en el keywordMap
-            const numeroEncontrado = buscarPalabraEnMapa(keywordMap, palabra);
-                
-            if (numeroEncontrado !== null) {
-                numerosEncontrados.push(numeroEncontrado);
-            }else{
-                numerosEncontrados.push(palabra);
-            }
+            // Busca el número correspondiente en el keywordMap o asigna 1000 si no está presente
+            const numeroEncontrado = buscarPalabraEnMapa(keywordMap, palabra) || asignarValor(palabra);
+
+            numerosEncontrados.push(numeroEncontrado);
         }
-        
-        // Muestra los números encontrados
+
+        // Muestra la consulta tokenizada
         console.log('Consulta Tokenizada:');
         console.log(numerosEncontrados);
     });
 });
+
+// Función para asignar un valor de 1000 a palabras no reservadas
+function asignarValor(palabra) {
+    return '1000';
+}
 
 // Función para buscar una palabra en el mapa y obtener su número
 function buscarPalabraEnMapa(keywordMap, palabra) {
