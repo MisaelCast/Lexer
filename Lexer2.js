@@ -124,18 +124,8 @@ function SELECT(numerosEncontrados) {
 
     for (let i = 0; i < numerosEncontrados.length; i++) {
         const numero = numerosEncontrados[i];
-
-        if (numero === '655') {
-            // Si encuentra un "SELECT" (655), incrementa el contador
-            contadorSelect++;
-
-            // Verifica si hay más de un "SELECT" consecutivo
-            if (contadorSelect > 1) {
-                errores.push('Error: Se encontró más de un "SELECT" consecutivo.');
-            }
-        } else {
-            // Reinicia el contador si no es un "SELECT"
-            contadorSelect = 0;
+        if (siguienteNumero !== '1000' && siguienteNumero !== '7') {
+            errores.push('Error: Después de un "SELECT" debe seguir un "1000" o un "7".');
         }
     }
 
