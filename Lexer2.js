@@ -63,9 +63,7 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
                     // Si la palabra no termina con una coma o punto y coma, agrégala tal como está
                     listaDePalabras.push(palabra);
                 }
-
             }
-
         }
 
         // Muestra la lista de palabras en la terminal.
@@ -92,6 +90,8 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
             if (erroresSelect.length > 0) {
                 console.log('Errores en la consulta SELECT:');
                 console.log(erroresSelect);
+                // Termina la ejecución del programa si hay errores
+                process.exit(1);
             } else {
                 console.log('La consulta SELECT es válida.');
             }
@@ -106,6 +106,8 @@ fs.readFile('sqlkeywords.txt', 'utf8', (err, data) => {
         if (errores.length > 0) {
             console.log('Errores en la consulta:');
             console.log(errores);
+            // Termina la ejecución del programa si hay errores
+            process.exit(1);
         } else {
             console.log('La consulta es válida.');
         }
@@ -120,11 +122,12 @@ function asignarValor(palabra) {
 // Función para validar la consulta SQL
 function SELECT(numerosEncontrados) {
     const errores = [];
-    let contadorSelect = 0;
 
     for (let i = 0; i < numerosEncontrados.length; i++) {
         const numero = numerosEncontrados[i];
-        if (siguienteNumero !== '1000' && siguienteNumero !== '7') {
+        const siguienteNumero = numerosEncontrados[i + 1];
+
+        if (numero === '655' && (siguienteNumero !== '1000' && siguienteNumero !== '7')) {
             errores.push('Error: Después de un "SELECT" debe seguir un "1000" o un "7".');
         }
     }
